@@ -1,14 +1,16 @@
-set(CMAKE_C_STANDARD 11)
+cmake_minimum_required(VERSION 3.20)
 
 add_executable(lab2
-        main.cpp)
+        main.cpp
+        src/parent.cpp
+        include/parent.h)
 
-target_include_directories(lab2 PRIVATE include)
+# target_include_directories(parent.out PRIVATE include)
 
 add_executable(child
         src/child.cpp
-        include/string_to_vector.h)
+        include/string_to_vector.h src/strint_to_vector.cpp)
 
-target_include_directories(child PRIVATE include)
+# target_include_directories(child.out PRIVATE include)
 
 add_dependencies(lab2 child)
