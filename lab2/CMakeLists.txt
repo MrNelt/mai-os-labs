@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 add_executable(lab2
         main.cpp
-        src/parent.cpp
-        include/parent.h)
+        include/parent.h src/parent.cpp)
 
 # target_include_directories(parent.out PRIVATE include)
 
