@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
     }
     else { // дочерний процесс
         close(fd[1]);
+
         int count_chars = 0;
         read(fd[0], &count_chars, sizeof(int));
 
