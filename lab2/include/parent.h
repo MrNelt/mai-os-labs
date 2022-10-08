@@ -6,7 +6,9 @@
 #include <string>
 #include <unistd.h>
 #include <cstdlib>
+#include <fstream>
+#include <stdio.h>
 
-int parent();
+int ParentRoutine(std::ifstream& s, char* PathToChild);
 
 #endif

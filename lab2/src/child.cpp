@@ -17,8 +17,7 @@ int main(int argc, char* argv[]) {
 
     char *string_numbers_array = (char*)malloc(string_numbers.size());
     string_numbers.copy(string_numbers_array, string_numbers.size());
-    std::vector <float> numbers;
-    string_to_vector_floats(string_numbers_array, numbers);
+    std::vector <float> numbers = string_to_vector_floats(string_numbers_array);
     free(string_numbers_array);
 
     float first_number = numbers[0];

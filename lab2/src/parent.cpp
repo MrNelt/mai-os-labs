@@ -1,9 +1,10 @@
 #include "../include/parent.h"
 
-int parent() {
-    std::string name_output_file;
-    std::getline(std::cin, name_output_file);
 
+int ParentRoutine(std::ifstream& s, char* PathToChild) {
+    std::string name_output_file;
+    std::getline(s, name_output_file);
+    //std::cout << PathToChild << "\n";
     char *name_output_file_array = (char*)malloc(name_output_file.size());
     name_output_file.copy(name_output_file_array, name_output_file.size());
 
@@ -22,7 +23,7 @@ int parent() {
     if (id) { // родительский процесс
         close(fd[0]);
         std::string string_numbers;
-        std::getline(std::cin, string_numbers);
+        std::getline(s, string_numbers);
 
         int count_chars = string_numbers.size();
         char *string_numbers_array = (char*)malloc(count_chars);
@@ -32,6 +33,8 @@ int parent() {
 
         free(string_numbers_array);
         free(name_output_file_array);
+        s.close();
+        remove("temp");
     }
     else { // дочерний процесс
         close(fd[1]);
@@ -41,8 +44,7 @@ int parent() {
 
         char *string_numbers_array = (char*) malloc(count_chars);
         read(fd[0], string_numbers_array, sizeof(char) * (count_chars));
-
-        if (execl("child", "child", name_output_file_array, string_numbers_array, NULL) == -1) {
+        if (execl(PathToChild, "child", name_output_file_array, string_numbers_array, NULL) == -1) {
             std::cout << "Error child process.\n";
             return EXIT_FAILURE;
         }

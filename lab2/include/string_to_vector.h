@@ -7,6 +7,6 @@
 #include <string.h>
 #include <cstdlib>
 
-void string_to_vector_floats(char string_numbers_array[], std::vector <float>& numbers);
+std::vector <float> string_to_vector_floats(char string_numbers_array[]);
 
 #endif
