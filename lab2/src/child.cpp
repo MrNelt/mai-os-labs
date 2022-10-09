@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    std::string name_output_file = argv[1];
+    auto name_output_file = argv[1];
     std::string string_numbers = argv[2];
 
     char *string_numbers_array = (char*)malloc(string_numbers.size());

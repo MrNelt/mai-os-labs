@@ -1,10 +1,11 @@
 #include "../include/parent.h"
+#include <cstdlib>
+#include <istream>
 
 
-int ParentRoutine(std::ifstream& s, char* PathToChild) {
+int ParentRoutine(std::istream& stream, char* PathToChild) {
     std::string name_output_file;
-    std::getline(s, name_output_file);
-    //std::cout << PathToChild << "\n";
+    std::getline(stream, name_output_file);
     char *name_output_file_array = (char*)malloc(name_output_file.size());
     name_output_file.copy(name_output_file_array, name_output_file.size());
 
@@ -23,7 +24,7 @@ int ParentRoutine(std::ifstream& s, char* PathToChild) {
     if (id) { // родительский процесс
         close(fd[0]);
         std::string string_numbers;
-        std::getline(s, string_numbers);
+        std::getline(stream, string_numbers);
 
         int count_chars = string_numbers.size();
         char *string_numbers_array = (char*)malloc(count_chars);
@@ -33,8 +34,6 @@ int ParentRoutine(std::ifstream& s, char* PathToChild) {
 
         free(string_numbers_array);
         free(name_output_file_array);
-        s.close();
-        remove("temp");
     }
     else { // дочерний процесс
         close(fd[1]);
