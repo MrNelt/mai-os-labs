@@ -1,4 +1,8 @@
 #include "../include/parent.h"
+#include <cstddef>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
 
 
 void ParentRoutine(std::istream& stream, char* PathToChild) {
@@ -21,35 +25,35 @@ void ParentRoutine(std::istream& stream, char* PathToChild) {
 
     if (id) { // родительский процесс
         close(fd[0]);
+
         std::string string_numbers;
-        std::getline(stream, string_numbers);
+        while (std::getline(stream, string_numbers)) {
+            char *string_numbers_array = (char*)malloc(string_numbers.size() + 1);
+            string_numbers.copy(string_numbers_array, string_numbers.size());
+            string_numbers_array[string_numbers.size()] = '\n';
+            write(fd[1], string_numbers_array, sizeof(char) * (string_numbers.size() + 1));
+            free(string_numbers_array);
+        }
 
-        int count_chars = string_numbers.size();
-        char *string_numbers_array = (char*)malloc(count_chars);
-        string_numbers.copy(string_numbers_array, count_chars);
-        write(fd[1], &count_chars, sizeof(int));
-        write(fd[1], string_numbers_array, sizeof(char) * (count_chars));
-
-
-        free(string_numbers_array);
         free(name_output_file_array);
-        close(fd[1]); 
+        close(fd[1]);
         wait(NULL);
     }
     else { // дочерний процесс
         close(fd[1]);
-
-        int count_chars = 0;
-        read(fd[0], &count_chars, sizeof(int));
-
-        char *string_numbers_array = (char*) malloc(count_chars);
-        read(fd[0], string_numbers_array, sizeof(char) * (count_chars));
-        if (execl(PathToChild, "child", name_output_file_array, string_numbers_array, NULL) == -1) {
-            std::cout << "Error child process.\n";
+        dup2(fd[0], 0);
+    
+        char* argv[3];
+        char child[] = "child";
+        argv[0] = child;
+        argv[1] = name_output_file_array;
+        argv[2] = NULL;
+    
+        if(execv(PathToChild, argv) == -1) {
+            std::cout << "Faildet to exec\n";
             exit(EXIT_FAILURE);
         }
-
-        free(string_numbers_array);
+    
         free(name_output_file_array);
         close(fd[0]);
     }
