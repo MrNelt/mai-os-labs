@@ -1,9 +1,7 @@
 #include "../include/parent.h"
-#include <cstdlib>
-#include <istream>
 
 
-int ParentRoutine(std::istream& stream, char* PathToChild) {
+void ParentRoutine(std::istream& stream, char* PathToChild) {
     std::string name_output_file;
     std::getline(stream, name_output_file);
     char *name_output_file_array = (char*)malloc(name_output_file.size());
@@ -12,13 +10,13 @@ int ParentRoutine(std::istream& stream, char* PathToChild) {
     int fd[2]; //0 - read 1 - write 
     if (pipe(fd) == -1) {
         std::cout << "Error creating pipe\n";
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     int id = fork();
     if (id == -1) {
         std::cout << "Error creating process\n";
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     if (id) { // родительский процесс
@@ -32,8 +30,11 @@ int ParentRoutine(std::istream& stream, char* PathToChild) {
         write(fd[1], &count_chars, sizeof(int));
         write(fd[1], string_numbers_array, sizeof(char) * (count_chars));
 
+
         free(string_numbers_array);
         free(name_output_file_array);
+        close(fd[1]); 
+        wait(NULL);
     }
     else { // дочерний процесс
         close(fd[1]);
@@ -45,12 +46,11 @@ int ParentRoutine(std::istream& stream, char* PathToChild) {
         read(fd[0], string_numbers_array, sizeof(char) * (count_chars));
         if (execl(PathToChild, "child", name_output_file_array, string_numbers_array, NULL) == -1) {
             std::cout << "Error child process.\n";
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         }
 
         free(string_numbers_array);
         free(name_output_file_array);
         close(fd[0]);
     }
-    return EXIT_SUCCESS;
 }

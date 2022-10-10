@@ -2,10 +2,10 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include <filesystem>
+#include <string>
 
 #include "parent.h"
 #include "string_to_float.h"
-
 
 
 TEST(TestStringToVector, Subtest_1) {
@@ -40,28 +40,98 @@ TEST(TestStringToVector, Subtest_3) {
 }
 
 TEST(TestParent, Subtest_1) {
-    std::string name_output_file = "jambo.txt";
-    std::string string_numbers = "1 0.5 0.5 0.5";
+    std::string name_output_file = "checker.txt";
     float expected_value = 8;
-
-    std::ofstream f_out("temp");
+    std::string string_numbers = "1 0.5 0.5 0.5";
+    std::ofstream f_out("input.txt");
     f_out << name_output_file << "\n";
     f_out << string_numbers << "\n";
     f_out.close();
 
-    std::ifstream f_in("temp");
-    parent(f_in, "child_test");
+    std::ifstream f_in = std::ifstream("input.txt");
+    ParentRoutine(f_in, getenv("PATH_TO_CHILD"));
+    f_in.close();
+    remove("input.txt");
 
-    std::ifstream f_in_check_temp("temp");
-    ASSERT_TRUE(f_in_check_temp.is_open() == false);
-    f_in_check_temp.close();
-
-    std::ifstream f_in_check_output("jambo.tea");
-    // ASSERT_TRUE(f_in_check_output.good() == true);
+    std::ifstream f_in_check_output = std::ifstream("checker.txt");
+    ASSERT_TRUE(f_in_check_output.good());
     std::string output_string;
     std::getline(f_in_check_output, output_string);
     float output_value = std::stof(output_string);
     ASSERT_FLOAT_EQ(output_value, expected_value);
     f_in_check_output.close();
-    remove("/home/alex/mai-os-labs/build/tests/jambo.txt");
+    remove("checker.txt");
+}
+
+
+TEST(TestParent, Subtest_2) {
+    std::string name_output_file = "out.txt";
+    float expected_value = 500;
+    std::string string_numbers = "1000 2 1";
+    std::ofstream f_out("input.txt");
+    f_out << name_output_file << "\n";
+    f_out << string_numbers << "\n";
+    f_out.close();
+
+    std::ifstream f_in = std::ifstream("input.txt");
+    ParentRoutine(f_in, getenv("PATH_TO_CHILD"));
+    f_in.close();
+    remove("input.txt");
+
+    std::ifstream f_in_check_output = std::ifstream("out.txt");
+    ASSERT_TRUE(f_in_check_output.good());
+    std::string output_string;
+    std::getline(f_in_check_output, output_string);
+    float output_value = std::stof(output_string);
+    ASSERT_FLOAT_EQ(output_value, expected_value);
+    f_in_check_output.close();
+    remove("out.txt");
+}
+
+TEST(TestParent, Subtest_3) {
+    std::string name_output_file = "jambo.tea";
+    float expected_value = 12.5;
+    std::string string_numbers = "100 8 1 1 1";
+    std::ofstream f_out("input.txt");
+    f_out << name_output_file << "\n";
+    f_out << string_numbers << "\n";
+    f_out.close();
+
+    std::ifstream f_in = std::ifstream("input.txt");
+    ParentRoutine(f_in, getenv("PATH_TO_CHILD"));
+    f_in.close();
+    remove("input.txt");
+
+    std::ifstream f_in_check_output = std::ifstream("jambo.tea");
+    ASSERT_TRUE(f_in_check_output.good());
+    std::string output_string;
+    std::getline(f_in_check_output, output_string);
+    float output_value = std::stof(output_string);
+    ASSERT_FLOAT_EQ(output_value, expected_value);
+    f_in_check_output.close();
+    remove("jambo.tea");
+}
+
+
+TEST(TestParent, Subtest_4) {
+    std::string name_output_file = "output.txt";
+    std::string expected_value = "NULL";
+    std::string string_numbers = "100 8 1 1 1 0";
+    std::ofstream f_out("input.txt");
+    f_out << name_output_file << "\n";
+    f_out << string_numbers << "\n";
+    f_out.close();
+
+    std::ifstream f_in = std::ifstream("input.txt");
+    ParentRoutine(f_in, getenv("PATH_TO_CHILD"));
+    f_in.close();
+    remove("input.txt");
+
+    std::ifstream f_in_check_output = std::ifstream("output.txt");
+    ASSERT_TRUE(f_in_check_output.good());
+    std::string output_string;
+    std::getline(f_in_check_output, output_string);
+    ASSERT_EQ(output_string, expected_value);
+    f_in_check_output.close();
+    remove("output.txt");
 }

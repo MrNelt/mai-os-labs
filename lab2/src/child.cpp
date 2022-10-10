@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -9,10 +10,11 @@
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cout << "Invalid arguments.\n";
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     auto name_output_file = argv[1];
+    FILE* out = fopen(name_output_file, "w");
     std::string string_numbers = argv[2];
 
     char *string_numbers_array = (char*)malloc(string_numbers.size());
@@ -24,15 +26,13 @@ int main(int argc, char* argv[]) {
     for (unsigned long long i = 1; i < numbers.size(); i++) {
         if (numbers[i] == 0) {
             std::cout << "Division by zero.\n";
-            return EXIT_FAILURE;
+            fprintf(out, "%s\n", "NULL");
+            fclose(out);
+            exit(EXIT_FAILURE);
         }
         first_number /= numbers[i];
     }
-
-    std::ofstream f;
-    f.open(name_output_file);
-    f << first_number << "\n";
-    f.close();
-
-    return EXIT_SUCCESS;
+    fprintf(out, "%f\n", first_number);
+    fclose(out);
+    return 0;
 }

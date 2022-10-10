@@ -1,6 +1,7 @@
 #ifndef PARENT_H
 #define PARENT_H
 
+#include <istream>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -8,7 +9,9 @@
 #include <cstdlib>
 #include <fstream>
 #include <stdio.h>
+#include <sys/wait.h>
 
-int ParentRoutine(std::ifstream& s, char* PathToChild);
+
+void ParentRoutine(std::istream& stream, char* PathToChild);
 
 #endif
