@@ -39,31 +39,25 @@ TEST(Lab2Test, ParentTest) {
 
     for (long unsigned int i = 0; i < 3; i++) {
         {
-
-        std::ofstream fOut("input.txt");
-        fOut << namesOutputFile[i] << "\n";
-        fOut << stringsNumbers[i] << "\n";
-
+            std::ofstream fOut("input.txt");
+            fOut << namesOutputFile[i] << "\n";
+            fOut << stringsNumbers[i] << "\n";
         }
 
         {
-
-        std::ifstream fIn("input.txt");
-        ParentRoutine(fIn, getenv("PATH_TO_CHILD"));
-
+            std::ifstream fIn("input.txt");
+            ParentRoutine(fIn, getenv("PATH_TO_CHILD"));
+            fIn.close();
         }
-    
         remove("input.txt");
-
-        {
     
-        std::ifstream fInCheckOutput = std::ifstream(namesOutputFile[i]);
-        ASSERT_TRUE(fInCheckOutput.good());
-        std::string outputString;
-        std::getline(fInCheckOutput, outputString);
-        EXPECT_EQ(outputString, expectedStrings[i]);
+        {
+            std::ifstream fInCheckOutput = std::ifstream(namesOutputFile[i]);
+            ASSERT_TRUE(fInCheckOutput.good());
+            std::string outputString;
+            std::getline(fInCheckOutput, outputString);
+            EXPECT_EQ(outputString, expectedStrings[i]);
         }
-
 
         remove(namesOutputFile[i].data());
     }

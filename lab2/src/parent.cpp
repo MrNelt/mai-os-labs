@@ -1,4 +1,5 @@
 #include "parent.h"
+#include <cstddef>
 
 void ParentRoutine(std::istream& stream, const char* pathToChild) {
     std::string nameOutputFile;
