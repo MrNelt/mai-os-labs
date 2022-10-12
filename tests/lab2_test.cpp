@@ -55,13 +55,15 @@ TEST(Lab2Test, ParentTest) {
     
         remove("input.txt");
 
-
+        {
+    
         std::ifstream fInCheckOutput = std::ifstream(namesOutputFile[i]);
         ASSERT_TRUE(fInCheckOutput.good());
         std::string outputString;
         std::getline(fInCheckOutput, outputString);
-        fInCheckOutput.close();
         EXPECT_EQ(outputString, expectedStrings[i]);
+        }
+
 
         remove(namesOutputFile[i].data());
     }
