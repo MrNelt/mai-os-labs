@@ -20,8 +20,8 @@ void ParentRoutine(std::istream& stream, const char* pathToChild) {
         close(parentPipe[0]);
         std::string stringNumbers;
         while (std::getline(stream, stringNumbers)) {
-            std::string stringNumberN = stringNumbers + "\n";
-            write(parentPipe[1], stringNumberN.data(), sizeof(char) * (stringNumberN.size()));
+            stringNumbers += "\n";
+            write(parentPipe[1], stringNumbers.data(), sizeof(char) * (stringNumbers.size()));
         }
         close(parentPipe[1]);
         wait(nullptr);
