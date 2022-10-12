@@ -47,7 +47,6 @@ TEST(Lab2Test, ParentTest) {
         {
             std::ifstream fIn("input.txt");
             ParentRoutine(fIn, getenv("PATH_TO_CHILD"));
-            fIn.close();
         }
         remove("input.txt");
     
