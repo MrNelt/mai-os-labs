@@ -1,60 +1,39 @@
-#include "../include/parent.h"
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <string>
+#include "parent.h"
 
+void ParentRoutine(std::istream& stream, const char* pathToChild) {
+    std::string nameOutputFile;
+    std::getline(stream, nameOutputFile);
 
-void ParentRoutine(std::istream& stream, char* PathToChild) {
-    std::string name_output_file;
-    std::getline(stream, name_output_file);
-    char *name_output_file_array = (char*)malloc(name_output_file.size());
-    name_output_file.copy(name_output_file_array, name_output_file.size());
-
-    int fd[2]; //0 - read 1 - write 
-    if (pipe(fd) == -1) {
+    std::array <int, 2> parentPipe; //0 - read 1 - write 
+    if (pipe(parentPipe.data()) == -1) {
         std::cout << "Error creating pipe\n";
         exit(EXIT_FAILURE);
     }
 
-    int id = fork();
-    if (id == -1) {
+    int pid = fork();
+    if (pid == -1) {
         std::cout << "Error creating process\n";
         exit(EXIT_FAILURE);
     }
 
-    if (id) { // родительский процесс
-        close(fd[0]);
-
-        std::string string_numbers;
-        while (std::getline(stream, string_numbers)) {
-            char *string_numbers_array = (char*)malloc(string_numbers.size() + 1);
-            string_numbers.copy(string_numbers_array, string_numbers.size());
-            string_numbers_array[string_numbers.size()] = '\n';
-            write(fd[1], string_numbers_array, sizeof(char) * (string_numbers.size() + 1));
-            free(string_numbers_array);
+    if (pid != 0) { // родительский процесс
+        close(parentPipe[0]);
+        std::string stringNumbers;
+        while (std::getline(stream, stringNumbers)) {
+            std::string stringNumberN = stringNumbers + "\n";
+            write(parentPipe[1], stringNumberN.data(), sizeof(char) * (stringNumberN.size()));
         }
-
-        free(name_output_file_array);
-        close(fd[1]);
-        wait(NULL);
+        close(parentPipe[1]);
+        wait(nullptr);
     }
     else { // дочерний процесс
-        close(fd[1]);
-        dup2(fd[0], 0);
-    
-        char* argv[3];
-        char child[] = "child";
-        argv[0] = child;
-        argv[1] = name_output_file_array;
-        argv[2] = NULL;
-    
-        if(execv(PathToChild, argv) == -1) {
-            std::cout << "Faildet to exec\n";
+        close(parentPipe[1]);
+        dup2(parentPipe[0], 0);
+   
+        if(execl(pathToChild, pathToChild, nameOutputFile.data(), nullptr) == -1) {
+            std::cout << "Failed to exec\n";
             exit(EXIT_FAILURE);
         }
-    
-        free(name_output_file_array);
-        close(fd[0]);
+        close(parentPipe[0]);
     }
 }

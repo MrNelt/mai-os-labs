@@ -1,13 +1,15 @@
-#include "../include/string_to_vector.h"
+#include "string_to_vector.h"
 
-std::vector <float> string_to_vector_floats(char string_numbers_array[]) {
-    std::vector <float> numbers;
-    char *tmp_char;
-    tmp_char = strtok(string_numbers_array," ");
-    while (tmp_char != NULL) {
-        numbers.push_back(std::stof(tmp_char));
-        tmp_char = strtok(NULL, " ");
+std::vector<float> StringToVectorFloats(std::string const& stringNumbers, char separator) {
+    std::vector<float> results;
+    std::string::const_iterator start = stringNumbers.begin();
+    std::string::const_iterator end = stringNumbers.end();
+    std::string::const_iterator next = std::find( start, end, separator);
+    while (next != end) {
+        results.push_back(stof(std::string(start, next)));
+        start = next + 1;
+        next = std::find(start, end, separator);
     }
-    free(tmp_char);
-    return numbers;
+    results.push_back(stof(std::string(start, next)));
+    return results;
 }
