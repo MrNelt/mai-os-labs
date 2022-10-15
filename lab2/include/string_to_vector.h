@@ -10,4 +10,4 @@
 
 std::vector<float> StringToVectorFloats(std::string const& stringNumbers, char separator=' ');
 
-#endif//>
+#endif//STRING_TO_VECTOR_H

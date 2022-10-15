@@ -1,5 +1,5 @@
 #include "parent.h"
-#include <cstddef>
+
 
 void ParentRoutine(std::istream& stream, const char* pathToChild) {
     std::string nameOutputFile;
@@ -22,7 +22,7 @@ void ParentRoutine(std::istream& stream, const char* pathToChild) {
         std::string stringNumbers;
         while (std::getline(stream, stringNumbers)) {
             stringNumbers += "\n";
-            write(parentPipe[1], stringNumbers.data(), sizeof(char) * (stringNumbers.size()));
+            write(parentPipe[1], stringNumbers.data(), stringNumbers.size());
         }
         close(parentPipe[1]);
         wait(nullptr);
