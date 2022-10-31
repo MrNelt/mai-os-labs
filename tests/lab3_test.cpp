@@ -28,12 +28,12 @@ bool operator==(const TMatrix& lhs, const TMatrix& rhs) {
         return false;
     }
 
-    for(int i = 0; i < isize(lhs); ++i) {
+    for(int i = 0; i < Isize(lhs); ++i) {
         if(lhs[i].size() != rhs[i].size()) {
             return false;
         }
 
-        for(int j = 0; j < isize(lhs); ++j) {
+        for(int j = 0; j < Isize(lhs); ++j) {
             if(lhs[i][j] != rhs[i][j]) {
                 return false;
             }
