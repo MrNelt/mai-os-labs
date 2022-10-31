@@ -3,7 +3,9 @@
 #include <iostream>
 
 int main() {
-    int n, m, threadCount;
+    int n;
+    int m;
+    int threadCount;
     std::cin >> n >> m >> threadCount;
 
     TMatrix lhs(n, std::vector<int>(m));
