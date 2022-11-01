@@ -1,47 +1,44 @@
 #include "lab3.h"
 #include "utils.h"
 
-#include <thread>
+#include <pthread.h>
 
-
-namespace {
-    void SumGivenRows(const TMatrix& lhs, const TMatrix& rhs, TMatrix& result, int firstRow, int lastRow) {
-        int m = Isize(lhs);
-        for(int i = firstRow; i < lastRow; ++i) {
-            for(int j = 0; j < m; ++j) {
-                result[i][j] = lhs[i][j] + rhs[i][j];
+void CheckingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix){
+    // координаты для проверки, row и col "приделываем к центру filter"
+    int rowBegin = row - filter[0].size() / 2;
+    int colBegin = col - filter.size() / 2;
+    int flag = 1;
+    for (int i = 0; i < (int)filter.size(); i++) {
+        if (!flag) {
+            break;
+        }
+        for (int j = 0; j < (int)filter[i].size(); j++) {
+            int rowTemp = rowBegin + j;
+            int colTemp = colBegin + i;
+            if (!(rowTemp >= 0 && rowTemp < (int)matrix[0].size() && colTemp >= 0 && colTemp < (int)matrix.size() && filter[i][j] == matrix[rowTemp][colTemp])) {
+                flag = 0;
+                break;
             }
         }
+    }
+    if (!flag) {
+        resultMatrix[row][col] = 0;
     }
 }
 
-TMatrix SumMatrices(const TMatrix& lhs, const TMatrix& rhs, int threadCount) {
-    TMatrix result(lhs.size(), std::vector<int>(lhs[0].size()));
-
-    if(threadCount > 1) {
-        int actualThreads = std::min(threadCount, Isize(result));
-
-        std::vector<std::thread> threads;
-        threads.reserve(actualThreads);
-
-        int rowsPerThread = Isize(result) / actualThreads;
-
-        for(int i = 0; i < Isize(result); i += rowsPerThread) {
-            if(i + rowsPerThread >= Isize(result)) {
-                threads.emplace_back(SumGivenRows, std::ref(lhs), std::ref(rhs), std::ref(result), i, Isize(result));
-            } else {
-                threads.emplace_back(SumGivenRows, std::ref(lhs), std::ref(rhs), std::ref(result),
-                                     i, i + rowsPerThread);
+void SummingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix) {
+    // координаты для суммирования, row и col "приделываем к центру filter"
+    int rowBegin = row - filter[0].size() / 2;
+    int colBegin = col - filter.size() / 2;
+    for (int i = 0; i < (int)filter.size(); i++) {
+        for (int j = 0; j < (int)filter[i].size(); j++) {
+            int rowTemp = rowBegin + j;
+            int colTemp = colBegin + i;
+            if (rowTemp >= 0 && rowTemp < (int)matrix[0].size() && colTemp >= 0 && colTemp < (int)matrix.size() && rowTemp != row && colTemp != col) {
+                //мютекс лок
+                resultMatrix[rowTemp][colTemp] += filter[i][j];
+                //мютекс анлок
             }
         }
-
-        for(auto& thread : threads) {
-            thread.join();
-        }
-    } else {
-        SumGivenRows(lhs, rhs, result, 0, lhs.size());
     }
-
-
-    return result;
 }

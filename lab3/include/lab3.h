@@ -5,6 +5,8 @@
 
 using TMatrix = std::vector<std::vector<int>>;
 
-TMatrix SumMatrices(const TMatrix& lhs, const TMatrix& rhs, int threadCount);
+void CheckingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix);
+
+void SummingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix);
 
 #endif //OS_LABS_LAB3_H
