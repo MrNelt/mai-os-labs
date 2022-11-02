@@ -2,6 +2,7 @@
 #define OS_LABS_LAB3_H
 
 #include <vector>
+#include <iostream>
 
 using TMatrix = std::vector<std::vector<int>>;
 

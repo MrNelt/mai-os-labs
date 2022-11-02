@@ -13,9 +13,9 @@ void CheckingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&re
             break;
         }
         for (int j = 0; j < (int)filter[i].size(); j++) {
-            int rowTemp = rowBegin + j;
-            int colTemp = colBegin + i;
-            if (!(rowTemp >= 0 && rowTemp < (int)matrix[0].size() && colTemp >= 0 && colTemp < (int)matrix.size() && filter[i][j] == matrix[rowTemp][colTemp])) {
+            int rowTemp = rowBegin + i;
+            int colTemp = colBegin + j;
+            if (!(rowTemp >= 0 && rowTemp < (int)matrix.size() && colTemp >= 0 && colTemp < (int)matrix[0].size() && filter[i][j] == matrix[rowTemp][colTemp])) {
                 flag = 0;
                 break;
             }
@@ -32,9 +32,9 @@ void SummingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&res
     int colBegin = col - filter.size() / 2;
     for (int i = 0; i < (int)filter.size(); i++) {
         for (int j = 0; j < (int)filter[i].size(); j++) {
-            int rowTemp = rowBegin + j;
-            int colTemp = colBegin + i;
-            if (rowTemp >= 0 && rowTemp < (int)matrix[0].size() && colTemp >= 0 && colTemp < (int)matrix.size() && rowTemp != row && colTemp != col) {
+            int rowTemp = rowBegin + i;
+            int colTemp = colBegin + j;
+            if (rowTemp >= 0 && rowTemp < (int)matrix.size() && colTemp >= 0 && colTemp < (int)matrix[0].size()) {
                 //мютекс лок
                 resultMatrix[rowTemp][colTemp] += filter[i][j];
                 //мютекс анлок
