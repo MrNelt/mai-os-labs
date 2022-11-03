@@ -1,21 +1,22 @@
 #include "lab3.h"
 
-#include <iostream>
 
 int main() {
     int threadCount;
-    int rowMatrix, colMatrix;
-    int rowFilter, colFilter;
+    int rowMatrix;
+    int colMatrix;
+    int rowFilter;
+    int colFilter;
     int counter;
 
     std::cin >> threadCount;
 
     std::cin >> rowMatrix >> colMatrix;
-    TMatrix matrix(rowMatrix, std::vector <int>(colMatrix));
+    TMatrix matrix(rowMatrix, std::vector <float>(colMatrix));
     ReadMatrix(matrix);
 
     std::cin >> rowFilter >> colFilter;
-    TMatrix filter(rowFilter, std::vector<int>(colFilter));
+    TMatrix filter(rowFilter, std::vector<float>(colFilter));
     ReadMatrix(filter);
 
     std::cin >> counter;
