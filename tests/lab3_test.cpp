@@ -305,7 +305,7 @@ TEST(ThirdLabTest, PerfomanceTest) {
     };
 
     auto singleThread = getAvgTime(1);
-    auto multiThread = getAvgTime(4);
+    auto multiThread = getAvgTime(8);
 
     std::cout << "Avg time for 1 thread: " << singleThread << '\n';
     std::cout << "Avg time for 8 threads: " << multiThread << '\n';
