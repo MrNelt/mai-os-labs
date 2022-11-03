@@ -42,3 +42,20 @@ void SummingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&res
         }
     }
 }
+
+void WriteMatrix(TMatrix &matrix) {
+    for (int i = 0; i < (int)matrix.size(); i++) {
+        for (int j = 0; j < (int)matrix.size(); j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+void ReadMatrix(TMatrix &matrix) {
+    for (int i = 0; i < (int)matrix.size(); i++) {
+        for (int j = 0; j < (int)matrix.size(); j++) {
+            std::cin >> matrix[i][j];
+        }
+    }
+}
