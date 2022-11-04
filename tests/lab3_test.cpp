@@ -74,7 +74,7 @@ TEST(Lab3Test, CheckingAroundTest) {
         {2, 1}
     };
 
-    for (int i = 0; i < (int)checkedCoords.size(); i++) {
+    for (int i = 0; i < Isize(checkedCoords); i++) {
         int row = checkedCoords[i].first;
         int col = checkedCoords[i].second;
         CheckingAround(row, col, matrix, filter, resultMatrix);
@@ -116,7 +116,7 @@ TEST(Lab3Test, SummingAroundTest) {
         {5, 4}
     };
 
-    for (int i = 0; i < (int)summingCoords.size(); i++) {
+    for (int i = 0; i < Isize(summingCoords); i++) {
         int row = summingCoords[i].first;
         int col = summingCoords[i].second;
         SummingAround(row, col, matrix, filter, resultMatrix);

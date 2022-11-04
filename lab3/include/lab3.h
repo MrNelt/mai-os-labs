@@ -6,8 +6,12 @@
 
 using TMatrix = std::vector<std::vector<float>>;
 
-struct TThreadToken;
-
+struct TThreadToken {
+    std::vector <std::pair<int, int>> coords;
+    TMatrix* matrix;
+    TMatrix* filter;
+    TMatrix* resultMatrix;
+};
 
 void CheckingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix);
 

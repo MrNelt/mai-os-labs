@@ -6,26 +6,19 @@
 
 pthread_mutex_t mutex;
 
-struct TThreadToken {
-    std::vector <std::pair<int, int>> coords;
-    TMatrix* matrix;
-    TMatrix* filter;
-    TMatrix* resultMatrix;
-};
-
 void CheckingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix){
     // координаты для проверки, row и col "приделываем к центру filter"
-    int rowBegin = row - (int)filter[0].size() / 2;
-    int colBegin = col - (int)filter.size() / 2;
+    int rowBegin = row - Isize(filter) / 2;
+    int colBegin = col - Isize(filter[0]) / 2;
     int flag = 1;
-    for (int i = 0; i < (int)filter.size(); i++) {
+    for (int i = 0; i < Isize(filter); i++) {
         if (flag == 0) {
             break;
         }
-        for (int j = 0; j < (int)filter[i].size(); j++) {
+        for (int j = 0; j < Isize(filter[i]); j++) {
             int rowTemp = rowBegin + i;
             int colTemp = colBegin + j;
-            if (!(rowTemp >= 0 && rowTemp < (int)matrix.size() && colTemp >= 0 && colTemp < (int)matrix[0].size() && filter[i][j] == matrix[rowTemp][colTemp])) {
+            if (!(rowTemp >= 0 && rowTemp < Isize(matrix) && colTemp >= 0 && colTemp < Isize(matrix[0]) && filter[i][j] == matrix[rowTemp][colTemp])) {
                 flag = 0;
                 break;
             }
@@ -38,13 +31,13 @@ void CheckingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&re
 
 void SummingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix) {
     // координаты для суммирования, row и col "приделываем к центру filter"
-    int rowBegin = row - (int)filter[0].size() / 2;
-    int colBegin = col - (int)filter.size() / 2;
-    for (int i = 0; i < (int)filter.size(); i++) {
-        for (int j = 0; j < (int)filter[i].size(); j++) {
+    int rowBegin = row - Isize(filter) / 2;
+    int colBegin = col - Isize(filter[0]) / 2;
+    for (int i = 0; i < Isize(filter); i++) {
+        for (int j = 0; j < Isize(filter[i]); j++) {
             int rowTemp = rowBegin + i;
             int colTemp = colBegin + j;
-            if (rowTemp >= 0 && rowTemp < (int)matrix.size() && colTemp >= 0 && colTemp < (int)matrix[0].size()) {
+            if (rowTemp >= 0 && rowTemp < Isize(matrix) && colTemp >= 0 && colTemp < Isize(matrix[0])) {
                 pthread_mutex_lock(&mutex);
                 resultMatrix[rowTemp][colTemp] += filter[i][j];
                 pthread_mutex_unlock(&mutex);
@@ -54,8 +47,8 @@ void SummingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&res
 }
 
 void WriteMatrix(TMatrix &matrix) {
-    for (int i = 0; i < (int)matrix.size(); i++) {
-        for (int j = 0; j < (int)matrix.size(); j++) {
+    for (int i = 0; i < Isize(matrix); i++) {
+        for (int j = 0; j < Isize(matrix[i]); j++) {
             std::cout << matrix[i][j] << " ";
         }
         std::cout << "\n";
@@ -63,8 +56,8 @@ void WriteMatrix(TMatrix &matrix) {
 }
 
 void ReadMatrix(TMatrix &matrix) {
-    for (int i = 0; i < (int)matrix.size(); i++) {
-        for (int j = 0; j < (int)matrix.size(); j++) {
+    for (int i = 0; i < Isize(matrix); i++) {
+        for (int j = 0; j < Isize(matrix[i]); j++) {
             std::cin >> matrix[i][j];
         }
     }
@@ -72,7 +65,7 @@ void ReadMatrix(TMatrix &matrix) {
 
 void* DilationRoutine(void* arg) {
     auto* token = (TThreadToken*) arg;
-    for (int i = 0; i < (int)token->coords.size(); i++) {
+    for (int i = 0; i < Isize(token->coords); i++) {
         SummingAround(token->coords[i].first, token->coords[i].second, *token->matrix, *token->filter, *token->resultMatrix);
     }
     return nullptr;
@@ -80,7 +73,7 @@ void* DilationRoutine(void* arg) {
 
 void* ErosionRoutine(void* arg) {
     auto* token = (TThreadToken*) arg;
-    for (int i = 0; i < (int)token->coords.size(); i++) {
+    for (int i = 0; i < Isize(token->coords); i++) {
         CheckingAround(token->coords[i].first, token->coords[i].second, *token->matrix, *token->filter, *token->resultMatrix);
     }
     return nullptr;
@@ -99,8 +92,8 @@ void DilationMatrix(TMatrix &matrix, TMatrix &filter, TMatrix &resultDilation, i
         tokens[i].resultMatrix = &resultDilation;
     }
     int update = 0;
-    for (int i = 0; i < (int)matrix.size(); i++) {
-        for (int j = 0; j < (int)matrix[i].size(); j++) {
+    for (int i = 0; i < Isize(matrix); i++) {
+        for (int j = 0; j < Isize(matrix[i]); j++) {
             update++;
             tokens[update % threadCount].coords.emplace_back(i, j);
         }
@@ -130,8 +123,8 @@ void ErosionMatrix(TMatrix &matrix, TMatrix &filter, TMatrix &resultErosion, int
         tokens[i].resultMatrix = &resultErosion;
     }
     int update = 0;
-    for (int i = 0; i < (int)matrix.size(); i++) {
-        for (int j = 0; j < (int)matrix[i].size(); j++) {
+    for (int i = 0; i < Isize(matrix); i++) {
+        for (int j = 0; j < Isize(matrix[i]); j++) {
             update++;
             tokens[update % threadCount].coords.emplace_back(i, j);
         }
