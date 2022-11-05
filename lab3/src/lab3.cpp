@@ -6,7 +6,7 @@
 
 pthread_mutex_t mutex;
 
-void CheckingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix){
+void CheckingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix){
     // координаты для проверки, row и col "приделываем к центру filter"
     int rowBegin = row - Isize(filter) / 2;
     int colBegin = col - Isize(filter[0]) / 2;
@@ -29,7 +29,7 @@ void CheckingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&re
     }
 }
 
-void SummingAround(int row, int col, TMatrix&matrix, TMatrix&filter, TMatrix&resultMatrix) {
+void SummingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix) {
     // координаты для суммирования, row и col "приделываем к центру filter"
     int rowBegin = row - Isize(filter) / 2;
     int colBegin = col - Isize(filter[0]) / 2;
