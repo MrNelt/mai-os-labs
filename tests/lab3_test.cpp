@@ -119,7 +119,7 @@ TEST(Lab3Test, SummingAroundTest) {
     for (int i = 0; i < Isize(summingCoords); i++) {
         int row = summingCoords[i].first;
         int col = summingCoords[i].second;
-        SummingAround(row, col, matrix, filter, resultMatrix);
+        SummingAround(row, col, matrix, filter, resultMatrix, 1);
     }
 
     TMatrix expectedMatrix = {
@@ -285,10 +285,10 @@ TEST(Lab3Test, ThreadConfigurations) {
 
 TEST(Lab3Test, PerfomanceTest) {
     auto getAvgTime = [](int threadCount) {
-        auto matrix = GenerateMatrix(300, 300);
-        auto filter = GenerateMatrix(7, 7);
+        auto matrix = GenerateMatrix(1000, 1000);
+        auto filter = GenerateMatrix(5, 5);
 
-        constexpr int runsCount = 5;
+        constexpr int runsCount = 3;
         constexpr int counter = 5;
 
         double avg = 0;
@@ -296,6 +296,7 @@ TEST(Lab3Test, PerfomanceTest) {
         for(int i = 0; i < runsCount; ++i) {
             auto begin = std::chrono::high_resolution_clock::now();
             auto resultErosion = matrix;
+            auto resultDilation = matrix;
             ErosionMatrix(matrix, filter, resultErosion, threadCount, counter);
             auto end = std::chrono::high_resolution_clock::now();
             avg += std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();

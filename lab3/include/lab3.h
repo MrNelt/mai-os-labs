@@ -8,6 +8,7 @@ using TMatrix = std::vector<std::vector<float>>;
 
 struct TThreadToken {
     std::vector <std::pair<int, int>> coords;
+    int counter;
     TMatrix* matrix;
     TMatrix* filter;
     TMatrix* resultMatrix;
@@ -15,7 +16,7 @@ struct TThreadToken {
 
 void CheckingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix);
 
-void SummingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix);
+void SummingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix, int counter);
 
 void ReadMatrix(TMatrix &matrix);
 

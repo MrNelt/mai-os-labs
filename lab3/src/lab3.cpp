@@ -29,7 +29,7 @@ void CheckingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix 
     }
 }
 
-void SummingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix) {
+void SummingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &resultMatrix, int counter) {
     // координаты для суммирования, row и col "приделываем к центру filter"
     int rowBegin = row - Isize(filter) / 2;
     int colBegin = col - Isize(filter[0]) / 2;
@@ -39,7 +39,7 @@ void SummingAround(int row, int col, TMatrix &matrix, TMatrix &filter, TMatrix &
             int colTemp = colBegin + j;
             if (rowTemp >= 0 && rowTemp < Isize(matrix) && colTemp >= 0 && colTemp < Isize(matrix[0])) {
                 pthread_mutex_lock(&mutex);
-                resultMatrix[rowTemp][colTemp] += filter[i][j];
+                resultMatrix[rowTemp][colTemp] += filter[i][j] * (float)counter;
                 pthread_mutex_unlock(&mutex);
             }
         }
@@ -66,7 +66,7 @@ void ReadMatrix(TMatrix &matrix) {
 void* DilationRoutine(void* arg) {
     auto* token = (TThreadToken*) arg;
     for (int i = 0; i < Isize(token->coords); i++) {
-        SummingAround(token->coords[i].first, token->coords[i].second, *token->matrix, *token->filter, *token->resultMatrix);
+        SummingAround(token->coords[i].first, token->coords[i].second, *token->matrix, *token->filter, *token->resultMatrix, token->counter);
     }
     return nullptr;
 }
@@ -90,24 +90,23 @@ void DilationMatrix(TMatrix &matrix, TMatrix &filter, TMatrix &resultDilation, i
         tokens[i].matrix = &matrixCopy;
         tokens[i].filter = &filter;
         tokens[i].resultMatrix = &resultDilation;
+        tokens[i].counter = counter;
     }
     int update = 0;
-    for (int i = 0; i < Isize(matrix); i++) {
-        for (int j = 0; j < Isize(matrix[i]); j++) {
+    for (int j = 0; j < Isize(matrix[0]); j++) {
+        for (int i = 0; i < Isize(matrix); i++) {
             update++;
             tokens[update % threadCount].coords.emplace_back(i, j);
         }
     }
 
-    for (int k = 0; k < counter; k++) {
-        for (int i = 0; i < threadCount; i++) {
-            pthread_create(&threads[i], nullptr, &DilationRoutine, &tokens[i]);
-        }
-        for (int i = 0; i < threadCount; i++) {
-            pthread_join(threads[i], nullptr);
-        }
-        matrixCopy = resultDilation;
+    for (int i = 0; i < threadCount; i++) {
+        pthread_create(&threads[i], nullptr, &DilationRoutine, &tokens[i]);
     }
+    for (int i = 0; i < threadCount; i++) {
+        pthread_join(threads[i], nullptr);
+    }
+
     pthread_mutex_destroy(&mutex);
 }
 
@@ -121,6 +120,7 @@ void ErosionMatrix(TMatrix &matrix, TMatrix &filter, TMatrix &resultErosion, int
         tokens[i].matrix = &matrixCopy;
         tokens[i].filter = &filter;
         tokens[i].resultMatrix = &resultErosion;
+        tokens[i].counter = counter;
     }
     int update = 0;
     for (int i = 0; i < Isize(matrix); i++) {
