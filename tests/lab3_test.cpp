@@ -135,7 +135,7 @@ TEST(Lab3Test, SummingAroundTest) {
 }
 
 
-TEST(ThirdLabTests, SingleThreadYieldsCorrectResults) {
+TEST(Lab3Test, SingleThreadYieldsCorrectResults) {
     int countTests = 3;
     std::vector <TMatrix> expectedMatrixsErosion {
         {
@@ -253,7 +253,7 @@ TEST(ThirdLabTests, SingleThreadYieldsCorrectResults) {
     }
 }
 
-TEST(ThirdLabTest, ThreadConfigurations) {
+TEST(Lab3Test, ThreadConfigurations) {
     std::srand(std::time(nullptr));
     auto performTestForGivenSize = [](int n1, int m1, int n2, int m2, int maxThreadCount) {
         int counter = 1 + std::rand() % 8;
@@ -283,7 +283,7 @@ TEST(ThirdLabTest, ThreadConfigurations) {
 }
 
 
-TEST(ThirdLabTest, PerfomanceTest) {
+TEST(Lab3Test, PerfomanceTest) {
     auto getAvgTime = [](int threadCount) {
         auto matrix = GenerateMatrix(300, 300);
         auto filter = GenerateMatrix(7, 7);
