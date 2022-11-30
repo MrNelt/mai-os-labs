@@ -24,7 +24,7 @@ void ParentRoutine(std::istream& stream, const char* pathToChild) {
     }
 
     if (pid != 0) { // родительский процесс
-	    /* memory map the shared memory object */
+        /* memory map the shared memory object */
         char* ptr = (char*)mmap(nullptr, getpagesize(), PROT_WRITE, MAP_SHARED, sfd, 0);
         if (ptr == MAP_FAILED) {
             std::cout << "Mmap error" << std::endl;
