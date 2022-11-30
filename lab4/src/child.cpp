@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     auto *nameOutputFile = argv[1];
     std::ofstream out(nameOutputFile);
     int sfd;
-	if ((sfd = shm_open(argv[2], O_CREAT | O_RDWR, S_IRWXU)) == -1) {
+	if ((sfd = shm_open(argv[2], O_RDWR, S_IRWXU)) == -1) {
         std::cout << "shm_open error" << std::endl;
         exit(EXIT_FAILURE);
     }
