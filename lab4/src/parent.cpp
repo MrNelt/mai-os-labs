@@ -7,15 +7,15 @@ void ParentRoutine(std::istream& stream, const char* pathToChild) {
     std::string nameOutputFile;
     std::getline(stream, nameOutputFile);
 
-	/* shared memory file descriptor */
+    /* shared memory file descriptor */
     int sfd;
-	/* create the shared memory object */
-	if ((sfd = shm_open(SHARED_MEMORY_OBJECT_NAME, O_CREAT | O_RDWR, S_IRWXU)) == -1) {
+    /* create the shared memory object */
+    if ((sfd = shm_open(SHARED_MEMORY_OBJECT_NAME, O_CREAT | O_RDWR, S_IRWXU)) == -1) {
         std::cout << "Shm_open error" << std::endl;
         exit(EXIT_FAILURE);
     }
-	/* configure the size of the shared memory object */
-	ftruncate(sfd, getpagesize());
+    /* configure the size of the shared memory object */
+    ftruncate(sfd, getpagesize());
 
     int pid = fork();
     if (pid == -1) {
