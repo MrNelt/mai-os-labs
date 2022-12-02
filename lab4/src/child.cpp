@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    char* ptr = (char*)mmap(nullptr, getpagesize(), PROT_READ, MAP_SHARED, sfd, 0);
+    char* ptr = (char*)mmap(nullptr, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, sfd, 0);
     if (ptr == MAP_FAILED) {
         std::cout << "error mmap func" << std::endl;
         exit(EXIT_FAILURE);
@@ -74,6 +74,8 @@ int main(int argc, char* argv[]) {
                 std::cout << "Division by zero.\n";
                 out << "\n";
                 out.close();
+                sprintf((char *) ptr, "%s", "Division by zero.");
+                sem_post(semInput);
                 exit(EXIT_FAILURE);
             }
             firstNumber /= numbers[i];

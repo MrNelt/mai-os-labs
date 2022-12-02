@@ -1,6 +1,7 @@
 #include "parent.h"
 #include <algorithm>
 #include <cstring>
+#include <semaphore.h>
 #include <sys/mman.h>
 #include <unistd.h>
 
@@ -9,7 +10,9 @@ constexpr auto SHARED_MEMORY_OBJECT_NAME = "shared_memory";
 constexpr auto SHARED_MEMORY_SEMAPHORE_INPUT_NAME = "shared_semaphore_input";
 constexpr auto SHARED_MEMORY_SEMAPHORE_OUTPUT_NAME = "shared_semaphore_output";
 
+
 void ParentRoutine(std::istream& stream, const char* pathToChild) {
+    // Clear();
     std::string nameOutputFile;
     std::getline(stream, nameOutputFile);
     /* shared memory file descriptor */
@@ -63,9 +66,14 @@ void ParentRoutine(std::istream& stream, const char* pathToChild) {
             std::cout << "Mmap error" << std::endl;
             exit(EXIT_FAILURE);
         }
+
         std::string stringNumbers;
         while (std::getline(stream, stringNumbers)) {
             sem_wait(semInput);
+            if (std::string(ptr) == "Division by zero.") {
+                sem_post(semInput);
+                break;
+            }
             stringNumbers += "\n";
             sprintf((char *) ptr, "%s", stringNumbers.c_str());
             sem_post(semOutput);
@@ -93,8 +101,16 @@ void ParentRoutine(std::istream& stream, const char* pathToChild) {
         if (munmap(ptr, getpagesize()) == -1) {
             std::cout << "Munmap error" << std::endl; 
             exit(EXIT_FAILURE);
-        }
+        }  
         if (shm_unlink(SHARED_MEMORY_OBJECT_NAME) == -1) {
+            std::cout << "Shm_unlink error" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        if (shm_unlink(SHARED_MEMORY_SEMAPHORE_INPUT_NAME) == -1) {
+            std::cout << "Shm_unlink error" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        if (shm_unlink(SHARED_MEMORY_SEMAPHORE_OUTPUT_NAME) == -1) {
             std::cout << "Shm_unlink error" << std::endl;
             exit(EXIT_FAILURE);
         }
