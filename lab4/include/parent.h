@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#include <semaphore.h>
 #include <cstring>
 
 
