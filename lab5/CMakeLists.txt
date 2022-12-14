@@ -1,16 +1,16 @@
-# Generate shared / static librarry for hello.c
+# Generate shared / static librarry for hello.cpp
 # STATIC generates `libhello.a`
 # SHARED geneartes `libhello.so`
 
-add_library(1_static STATIC src/lib_1.cpp include/lib.h)
-add_library(2_static STATIC src/lib_2.cpp include/lib.h)
-add_library(1_dynamic SHARED src/lib_1.cpp include/lib.h)
-add_library(2_dynamic SHARED src/lib_2.cpp include/lib.h)
+add_library(d1_static STATIC src/implem1.cpp include/signature.h)
+add_library(d2_static STATIC src/implem2.cpp include/signature.h)
+add_library(d1_dynamic SHARED src/implem1.cpp include/signature.h)
+add_library(d2_dynamic SHARED src/implem2.cpp include/signature.h)
 
-target_include_directories(1_static PRIVATE include)
-target_include_directories(2_static PRIVATE include)
-target_include_directories(1_dynamic PRIVATE include)
-target_include_directories(2_dynamic PRIVATE include)
+target_include_directories(d1_static PRIVATE include)
+target_include_directories(d2_static PRIVATE include)
+target_include_directories(d1_dynamic PRIVATE include)
+target_include_directories(d2_dynamic PRIVATE include)
 
 
 # Genarete `main` executable from `main.cpp`
@@ -23,8 +23,8 @@ target_include_directories(main_static_2 PRIVATE include)
 target_include_directories(main_dynamic PRIVATE include)
 
 # Link `main` program with library
-target_link_libraries(main_static_1 1_static)
-target_link_libraries(main_static_2 2_static)
-target_link_libraries(main_dynamic) 
+target_link_libraries(main_static_1 d1_static)
+target_link_libraries(main_static_2 d2_static)
+target_link_libraries(main_dynamic)
 
 
