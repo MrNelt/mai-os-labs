@@ -7,10 +7,9 @@
 #include <vector>
 
 
-const std::vector <std::string> LIB = {"./libd1_dynamic.so", "./libd2_dynamic.so"};
-const std::vector <std::string> FUNC_NAME = {"E", "SinIntegral"};
-
 int main() {
+    const std::vector <std::string> LIB = {"./libd1_dynamic.so", "./libd2_dynamic.so"};
+    const std::vector <std::string> FUNC_NAME = {"E", "SinIntegral"};
     int curlib = 0;
     float (*e)(int x);
     float (*sinIntegral)(float a, float b, float e);

@@ -1,7 +1,6 @@
 #include <iostream>
 
-extern "C" float E(int x);
-extern "C" float SinIntegral(float a, float b, float e);
+#include "signature.h"
 
 int main() {
     int command;

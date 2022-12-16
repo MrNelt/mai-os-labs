@@ -5,7 +5,9 @@
 #include <algorithm>
 #include <cmath>
 
-extern "C" float E (int x);
-extern "C" float SinIntegral(float a, float b, float e);
+extern "C" {
+    float E(int x);
+    float SinIntegral(float a, float b, float e);
+}
 
 #endif /* SIGNATURE */

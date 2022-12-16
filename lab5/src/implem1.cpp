@@ -1,7 +1,6 @@
 #include "signature.h"
 
-
-extern "C" float E(int x) {
+float E(int x) {
     if (x < 0) {
         return -1;
     }
@@ -12,7 +11,7 @@ extern "C" float E(int x) {
     return e;
 }
 
-extern "C" float SinIntegral(float a, float b, float e) {
+float SinIntegral(float a, float b, float e) {
     if (a > b || e > (b - a)) {
         return -1;
     }

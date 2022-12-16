@@ -23,8 +23,8 @@ target_include_directories(main_static_2 PRIVATE include)
 target_include_directories(main_dynamic PRIVATE include)
 
 # Link `main` program with library
-target_link_libraries(main_static_1 d1_static)
-target_link_libraries(main_static_2 d2_static)
-target_link_libraries(main_dynamic)
+target_link_libraries(main_static_1 PRIVATE d1_static)
+target_link_libraries(main_static_2 PRIVATE d2_static)
+
 
 

@@ -1,7 +1,7 @@
 #include "signature.h"
 #include <iostream>
 
-extern "C" float E(int x) {
+float E(int x) {
     if (x < 0) {
         return -1;
     }
@@ -14,7 +14,7 @@ extern "C" float E(int x) {
     return e;
 }
 
-extern "C" float SinIntegral(float a, float b, float e) {
+float SinIntegral(float a, float b, float e) {
     float value = 0;
     for (float i = a; i <= b - e; i += e) {
         value += (std::sin(i) + std::sin(i + e)) / 2;

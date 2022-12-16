@@ -9,10 +9,9 @@
 
 #include "signature.h"
 
-const std::vector <std::string> FUNC_NAME = {"E", "SinIntegral"};
-
 
 TEST(Lab5Test, DynamicTest) {
+    const std::vector <std::string> FUNC_NAME = {"E", "SinIntegral"};
     const float expectE = 2.71;
     const auto inputParameterE = {500, 300, 200};
 
