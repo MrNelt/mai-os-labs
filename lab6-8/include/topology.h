@@ -16,17 +16,15 @@ private:
 	TListType container;
 	size_t containerSize{};
 public:
-	// explicit TTopology() noexcept : container(), { }
-	// ~TTopology() = default;
 	bool Erase(const int & elem);
 
-	long long Find(const int & elem);
+	int Find(const int & elem);
 
 	bool Insert(const int & parent, const int & elem);
 
 	void Insert(const int & elem);
 
-	size_t Size() const;
+	size_t Size();
 
 };
 

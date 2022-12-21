@@ -20,8 +20,8 @@ bool TTopology::Erase(const int & elem) {
     return false;
 }
 
-long long TTopology::Find(const int & elem) {
-    long long ind = 0;
+int TTopology::Find(const int & elem) {
+    int ind = 0;
     for (auto & it1 : container) {
         for (int & it2 : it1) {
             if (it2 == elem) {
@@ -53,6 +53,6 @@ void TTopology::Insert(const int & elem) {
     container.push_back(newList);
 }
 
-size_t TTopology::Size() const{
+size_t TTopology::Size(){
     return containerSize;
 }
