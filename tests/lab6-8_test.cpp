@@ -1,10 +1,13 @@
 #include <algorithm>
 #include <cstddef>
 #include <gtest/gtest.h>
+#include <zmq.hpp>
+
 
 
 
 #include "topology.h"
+#include "zmqf.h"
 
 TEST(lab6Test, TopologyTest){
     TTopology container;
@@ -36,3 +39,4 @@ TEST(lab6Test, TopologyTest){
     EXPECT_EQ(container.Find(999), 3);
     EXPECT_EQ(container.Find(-8), -1);
 }
+

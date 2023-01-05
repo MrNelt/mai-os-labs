@@ -13,9 +13,11 @@ private:
 	using TIterator = typename std::list<int>::iterator;
 	using TListIterator = typename TListType::iterator;
 
+	// TListType container;
+	// size_t containerSize{};
+public:
 	TListType container;
 	size_t containerSize{};
-public:
 	bool Erase(const int & elem);
 
 	int Find(const int & elem);
@@ -27,5 +29,4 @@ public:
 	size_t Size();
 
 };
-
-#endif /* TOPOLOGY */
+#endif /* TOPOLOGY_H */
