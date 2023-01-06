@@ -48,7 +48,7 @@ target_include_directories(lab5_test PRIVATE ../lab5/include)
 add_test(lab5_test lab5_test)
 
 
-add_executable(lab6-8_test lab6-8_test.cpp ../lab6-8/include/topology.h ../lab6-8/src/topology.cpp ../lab6-8/include/zmqf.h ../lab6-8/src/zmqf.cpp)
+add_executable(lab6-8_test lab6-8_test.cpp ../lab6-8/include/topology.h ../lab6-8/src/topology.cpp ../lab6-8/include/zmqf.h ../lab6-8/src/zmqf.cpp ../lab6-8/include/search.h ../lab6-8/src/search.cpp)
 target_link_libraries(lab6-8_test PRIVATE GTest::GTest zmq)
 target_include_directories(lab6-8_test PRIVATE ../lab6-8/include)
 add_test(lab6-8_test lab6-8_test)

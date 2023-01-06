@@ -2,14 +2,17 @@
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <zmq.hpp>
+#include <vector>
 
 
 
 
 #include "topology.h"
 #include "zmqf.h"
+#include "search.h"
 
-TEST(lab6Test, TopologyTest){
+
+TEST(lab6Test, TopologyTest) {
     TTopology container;
     size_t size = 0;
 
@@ -40,3 +43,33 @@ TEST(lab6Test, TopologyTest){
     EXPECT_EQ(container.Find(-8), -1);
 }
 
+
+TEST(lab6Test, SearchTest) {
+    std::vector <std::string> text = {
+        "aba444444aba",
+        "123456789",
+        "test",
+        "1"
+    };
+    std::vector <std::string> pattern = {
+        "aba",
+        "1",
+        "st",
+        "0"
+    };
+
+    std::vector <std::vector<unsigned int>> answers = {
+        {0, 9},
+        {0},
+        {2},
+        {}
+    };
+
+    for (size_t i = 0; i < text.size(); ++i) {
+        auto answer = KMP(pattern[i], text[i]);
+        ASSERT_EQ(answers[i].size(), answer.size());
+        for (size_t j = 0; j < answer.size(); ++j) {
+            EXPECT_EQ(answers[i][j], answer[j]);
+        } 
+    }
+}
