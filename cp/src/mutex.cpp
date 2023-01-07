@@ -54,7 +54,7 @@ TCommonMutex SharedMutexInit(const char *name) {
     return mutex;
 }
 int SharedMutexDestroy(TCommonMutex mutex) {
-    if ((errno = pthread_mutex_destroy(mutex.ptr))) {
+    if ((errno = pthread_mutex_destroy(mutex.ptr)) != 0) {
         std:: cout << "An error while destroying mutex has been detected!" << std:: endl;
         return -1;
     }

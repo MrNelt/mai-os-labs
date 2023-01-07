@@ -8,8 +8,8 @@
 
 class TPlayer {
     public:
-        std:: string username;
-        std:: vector<std::vector<char>> field;
+        std::string username;
+        std::vector<std::vector<char>> field;
         int wins{};
         int loses{};
         int kills{};
@@ -40,7 +40,7 @@ class TGame {
             created = false;
         }
 };
-void RandomLocation (std::vector<std::vector<char>> &field) {
+void RandomLocation(std::vector<std::vector<char>> &field) {
     int j =- 1;
     int k;
     int v;
@@ -61,7 +61,7 @@ void RandomLocation (std::vector<std::vector<char>> &field) {
         std::replace(field[i].begin(), field[i].end(), '/', '.');
     }
 }
-void PrintField (std::vector<std::vector<char>> &field) {
+void PrintField(std::vector<std::vector<char>> &field) {
     for (int i = 1; i < 11; ++i) {
         for (int j = 1; j < 11; ++j) {
             std:: cout << field[i][j];
@@ -69,7 +69,7 @@ void PrintField (std::vector<std::vector<char>> &field) {
         std:: cout << std:: endl;
     }
 }
-bool WonGame (std::vector<std::vector<char>> &field) {
+bool WonGame(std::vector<std::vector<char>> &field) {
     for (int i = 1; i < 11; ++i) {
         for (int j = 1; j < 11; ++j) {
             if (field[i][j] == 'X') {
@@ -79,7 +79,7 @@ bool WonGame (std::vector<std::vector<char>> &field) {
     }
     return true;
 }
-void PrepareField (std::vector<std::vector<char>>& field) {
+void PrepareField(std::vector<std::vector<char>>& field) {
 	for (int i = 0; i < 12; i++) {
 		field[i].clear();
 		field[i] = std::vector<char>(12, '.');

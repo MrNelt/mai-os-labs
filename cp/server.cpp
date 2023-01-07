@@ -8,11 +8,13 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "include/game.hpp"
-#include "include/mappedFile.h"
-#include "include/mutex.h"
-
 #include <fstream>
+
+
+#include "game.hpp"
+#include "mappedFile.h"
+#include "mutex.h"
+
 
 int main() {
     TPlayer creator;
@@ -409,6 +411,7 @@ int main() {
                 std:: string playerMessage = to + _MSG_SEP + clientCommands[1] + _MSG_SEP + "disconnected" + _MSG_SEP;
                 sprintf(mappedFile.data, "%s", playerMessage.c_str());
                 std::cout << "FROM SERVER: Sending to client next message: " << playerMessage << std::endl;
+                game.created = false;
             }
             else {
                 creator.turn = true;

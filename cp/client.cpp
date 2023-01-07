@@ -182,8 +182,8 @@ int main() {
             std:: cin >> gamename >> password;
             currentGame = gamename;
             std::string on = "ON";
-            std:: string server_message = on + _MSG_SEP + nickname + _MSG_SEP + "create" + _MSG_SEP + gamename + _MSG_SEP + password + _MSG_SEP;
-            SendMessage (server_message);
+            std:: string serverMessage = on + _MSG_SEP + nickname + _MSG_SEP + "create" + _MSG_SEP + gamename + _MSG_SEP + password + _MSG_SEP;
+            SendMessage (serverMessage);
             bool hasnotanswer = true;
             while (hasnotanswer) {
                 hasnotanswer = !ReceiveAnswer();
@@ -235,10 +235,8 @@ int main() {
             }
         }
         else if (playing && command == "stats") {
-            std:: string username;
-            std:: cin >> username;
             std::string on = "ON";
-            std:: string serverMessage = on + _MSG_SEP + username + _MSG_SEP + "stats" + _MSG_SEP + currentGame + _MSG_SEP;
+            std:: string serverMessage = on + _MSG_SEP + nickname + _MSG_SEP + "stats" + _MSG_SEP + currentGame + _MSG_SEP;
             SendMessage (serverMessage);
             bool hasnotanswer = true;
             while (hasnotanswer) {
